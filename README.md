@@ -11,7 +11,7 @@
 ## 快速开始
 
 1. 安装并配置 [Hex](https://anoma.ly/hex/)，确认可以完成一次听写。HexTouch 通过 Hex 的命令行控制听写，语音模型由 Hex 提供。
-2. 下载 [Windows 安装包（推荐）](https://github.com/cdacai/hex-touch/releases/latest/download/HexTouchSetup.exe) 或 [免安装版](https://github.com/cdacai/hex-touch/releases/latest/download/HexTouch.exe)。[查看版本说明](https://github.com/cdacai/hex-touch/releases/latest)
+2. 下载 [HexTouch Windows 安装版（推荐）](https://github.com/cdacai/hex-touch/releases/latest/download/HexTouchSetup.exe) 或 [HexTouch Windows 免安装版](https://github.com/cdacai/hex-touch/releases/latest/download/HexTouch.exe)。[查看版本说明](https://github.com/cdacai/hex-touch/releases/latest)
 3. 打开记事本并放好光标。左键点击托盘里的 HexTouch 图标显示悬浮按钮，再点主按钮试说一句。主按钮变红表示正在录音。
 
 ## HexTouch 带来哪些便利
@@ -48,7 +48,7 @@ HexTouch 通过 Hex 的命令行控制听写。选择悬浮按钮作为入口，
 
 ## 安装
 
-### 安装包（推荐）
+### HexTouch Windows 安装版（推荐）
 
 运行 `HexTouchSetup.exe`：
 
@@ -63,7 +63,7 @@ HexTouch 通过 Hex 的命令行控制听写。选择悬浮按钮作为入口，
 
 安装窗口会预填当前用户的完整路径（默认 `%LOCALAPPDATA%\HexTouch`），通常无需管理员权限。可以直接编辑盘符或输入 `D:\Tools\HexTouch`，也可以点「浏览」。点击「安装」会创建缺少的文件夹并检查写入权限。
 
-### 免安装
+### HexTouch Windows 免安装版
 
 直接运行 `HexTouch.exe` 即可，不需要安装。首次运行默认启用开机自启动，并保存以下数据：
 
