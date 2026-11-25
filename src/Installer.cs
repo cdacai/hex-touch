@@ -34,45 +34,95 @@ internal static class Installer
             }
         }
 
-        if (dir == defaultDir && !silent)
+        if (!silent)
         {
-            using (var dlg = new FolderBrowserDialog())
-            {
-                dlg.Description = "选择安装位置（建议放在当前用户目录，避免权限问题）";
-                dlg.SelectedPath = defaultDir;
-                dlg.ShowNewFolderButton = true;
-                if (dlg.ShowDialog() != DialogResult.OK)
-                {
-                    return;
-                }
-                dir = dlg.SelectedPath;
-            }
+            dir = ChooseDirectory(dir);
+            if (dir == null) return;
         }
-
-        // 目录里已经有别的文件时先提醒：卸载只删 HexTouch 自己的文件，不会连累原有内容。
-        if (!silent && Directory.Exists(dir) && Directory.GetFileSystemEntries(dir).Length > 0)
-        {
-            if (MessageBox.Show(
-                    "这个目录里已经有其他文件：\n" + dir +
-                    "\n\nHexTouch 会把自己的文件放进去；卸载时只删除 HexTouch 自己的文件，" +
-                    "这里的原有内容不会被动。\n\n继续安装吗？",
-                    AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Information) != DialogResult.Yes)
-            {
-                return;
-            }
-        }
-
-        string exe = Path.Combine(dir, AppName + ".exe");
-        string uninstaller = Path.Combine(dir, AppName + "Uninstall.exe");
 
         try
         {
+            // 目录里已经有别的文件时先提醒：卸载只删 HexTouch 自己的文件，不会连累原有内容。
+            if (!silent && Directory.Exists(dir) && Directory.GetFileSystemEntries(dir).Length > 0)
+            {
+                if (MessageBox.Show(
+                        "这个目录里已经有其他文件：\n" + dir +
+                        "\n\nHexTouch 会把自己的文件放进去；卸载时只删除 HexTouch 自己的文件，" +
+                        "这里的原有内容不会被动。\n\n继续安装吗？",
+                        AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Information) != DialogResult.Yes)
+                {
+                    return;
+                }
+            }
+
+            string exe = Path.Combine(dir, AppName + ".exe");
+            string uninstaller = Path.Combine(dir, AppName + "Uninstall.exe");
             Install(dir, exe, uninstaller, silent);
         }
         catch (Exception ex)
         {
+            Environment.ExitCode = 1;
             if (silent) Console.WriteLine(ex);
             else MessageBox.Show("安装失败：" + ex.Message, AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private static string ChooseDirectory(string initialPath)
+    {
+        using (var form = new Form())
+        {
+            form.Text = "安装 HexTouch";
+            form.FormBorderStyle = FormBorderStyle.FixedDialog;
+            form.StartPosition = FormStartPosition.CenterScreen;
+            form.MinimizeBox = form.MaximizeBox = false;
+            form.AutoScaleMode = AutoScaleMode.Font;
+            form.ClientSize = new System.Drawing.Size(560, 150);
+
+            var label = new Label { Text = "安装位置", Left = 16, Top = 14, AutoSize = true };
+            var path = new TextBox { Left = 16, Top = 38, Width = 441, Text = initialPath };
+            var browse = new Button { Text = "浏览…", Left = 465, Top = 36, Width = 78 };
+            var hint = new Label { Text = @"推荐使用当前用户目录，也可以直接输入其他位置，例如 D:\Tools\HexTouch。",
+                Left = 16, Top = 70, AutoSize = true };
+            var install = new Button { Text = "安装", Left = 379, Top = 106, Width = 78 };
+            var cancel = new Button { Text = "取消", Left = 465, Top = 106, Width = 78,
+                DialogResult = DialogResult.Cancel };
+            form.Controls.AddRange(new Control[] { label, path, browse, hint, install, cancel });
+            form.AcceptButton = install;
+            form.CancelButton = cancel;
+            browse.Click += delegate
+            {
+                using (var picker = new FolderBrowserDialog())
+                {
+                    picker.Description = "选择 HexTouch 的安装文件夹";
+                    if (Directory.Exists(path.Text)) picker.SelectedPath = path.Text;
+                    if (picker.ShowDialog(form) == DialogResult.OK) path.Text = picker.SelectedPath;
+                }
+            };
+            install.Click += delegate
+            {
+                try
+                {
+                    string input = Environment.ExpandEnvironmentVariables(path.Text.Trim().Trim('"'));
+                    string root = Path.GetPathRoot(input);
+                    if (string.IsNullOrEmpty(root) || root.Length < 3)
+                        throw new ArgumentException("请输入包含盘符的完整文件夹路径。");
+                    string full = Path.GetFullPath(input);
+                    if (string.Equals(full.TrimEnd('\\'), root.TrimEnd('\\'), StringComparison.OrdinalIgnoreCase))
+                        throw new ArgumentException("请选择盘符下的文件夹，例如 D:\\HexTouch。");
+                    Directory.CreateDirectory(full);
+                    using (new FileStream(Path.Combine(full, Path.GetRandomFileName()),
+                        FileMode.CreateNew, FileAccess.Write, FileShare.None, 1, FileOptions.DeleteOnClose)) { }
+                    path.Text = full;
+                    form.DialogResult = DialogResult.OK;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(form, "无法使用这个安装位置，请修改后重试。\n\n" + ex.Message,
+                        AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    path.Focus();
+                }
+            };
+            return form.ShowDialog() == DialogResult.OK ? path.Text : null;
         }
     }
 
