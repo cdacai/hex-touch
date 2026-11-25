@@ -7,7 +7,7 @@
 ## 快速开始
 
 1. 安装并配置 [Hex](https://anoma.ly/hex/)，确认可以完成一次听写。HexTouch 通过 Hex 的命令行控制听写，语音模型由 Hex 提供。
-2. 在 [Releases](https://github.com/cdacai/hex-touch/releases) 中选择安装包 `HexTouchSetup.exe` 或免安装版 `HexTouch.exe`，也可以按下文从源码构建。运行需要 Windows 和 .NET Framework 4.x。
+2. 下载 [Windows 安装包（推荐）](https://github.com/cdacai/hex-touch/releases/latest/download/HexTouchSetup.exe) 或 [免安装版](https://github.com/cdacai/hex-touch/releases/latest/download/HexTouch.exe)。运行需要 Windows 和 .NET Framework 4.x。[查看版本说明](https://github.com/cdacai/hex-touch/releases/latest)
 3. 打开记事本并放好光标。左键点击托盘里的 HexTouch 图标显示悬浮按钮，再点主按钮试说一句。主按钮变红表示正在录音。
 
 ## 功能
@@ -20,6 +20,12 @@
 - 可拖动，位置自动记住
 - 开机自启（托盘菜单里勾选）
 - 单文件 exe，不依赖 Python、不需要装 .NET SDK，用系统自带的 .NET Framework 4.x
+
+## 资源占用
+
+在一台 Windows 设备上，对显示悬浮按钮的 HexTouch 开发预览版每隔一秒采样一次，共三次。工作集约 **47.2 MiB**（含共享内存页），专用提交内存约 **29.9 MiB**。这两个指标有重叠。同期独立运行的 Hex 听写进程工作集约 **257 MiB**。这些数值是短时观测，实际占用会随设备、版本和听写状态变化。
+
+如果大家喜欢这个工具，我们会继续优化它的常驻内存占用，优先关注托盘待机和显示悬浮按钮这两个最常用的场景。欢迎在 [Issues](https://github.com/cdacai/hex-touch/issues) 分享设备、Windows 版本和使用时的观测数据。
 
 ## 安装
 
