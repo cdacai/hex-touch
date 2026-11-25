@@ -1,6 +1,8 @@
 # HexTouch
 
-给 Windows 上的 Hex 听写加上三个触控按钮。轻点主按钮开始说话，再点一下，转写文字就会出现在原来的光标处。右侧两个按钮可以退格和回车，适合没有实体键盘的 Windows 平板。
+HexTouch 给 Windows 上的 Hex 听写加上三个悬浮按钮。用鼠标点一下，或用手指轻触，就能开始说话；再点一下，转写文字会出现在原来的光标处。台式机、笔记本和 Windows 平板都适用。
+
+**强烈推荐在 Windows 平板上使用。** 录音、退格、分段和回车都能在输入框旁边点按完成。用鼠标时也很顺手，选好输入位置后就能直接开始听写。
 
 ![HexTouch 的录音、退格和回车按钮悬浮在记事本的周会纪要旁](docs/images/hextouch-notepad.png)
 
@@ -9,6 +11,17 @@
 1. 安装并配置 [Hex](https://anoma.ly/hex/)，确认可以完成一次听写。HexTouch 通过 Hex 的命令行控制听写，语音模型由 Hex 提供。
 2. 下载 [Windows 安装包（推荐）](https://github.com/cdacai/hex-touch/releases/latest/download/HexTouchSetup.exe) 或 [免安装版](https://github.com/cdacai/hex-touch/releases/latest/download/HexTouch.exe)。运行需要 Windows 和 .NET Framework 4.x。[查看版本说明](https://github.com/cdacai/hex-touch/releases/latest)
 3. 打开记事本并放好光标。左键点击托盘里的 HexTouch 图标显示悬浮按钮，再点主按钮试说一句。主按钮变红表示正在录音。
+
+## HexTouch 带来哪些便利
+
+下面以 Hex 的按住快捷键听写方式为例。两种方式都由 Hex 完成转写，HexTouch 增加的是鼠标和触屏上的操作入口。
+
+| 使用场景 | 用键盘操作 | 加上 HexTouch |
+|---|---|---|
+| 录一段较长的话 | 按住听写快捷键说话，松开结束 | 点一下开始，说话时手可以移开，讲完再点一下 |
+| 改掉光标前的错字 | 按键盘上的退格键 | 点右上角退格按钮，光标仍留在原输入框 |
+| 在「回车发送」的聊天框里分段 | 使用聊天应用的换行快捷键 | 双击右下回车按钮插入换行，写完单击同一按钮发送 |
+| 在平板上边看文档边输入 | 使用实体键盘或调出屏幕键盘进行编辑 | 把三个按钮拖到顺手的一侧，听写、退格和换行都能就地完成 |
 
 ## 功能
 
