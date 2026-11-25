@@ -1,5 +1,7 @@
 # HexTouch
 
+[简体中文](README.md) | [English](README.en.md)
+
 **不用按键，也能听写、删字和换行。** HexTouch 给 Windows 上的 Hex 听写加上三个悬浮按钮。用手指或鼠标点一下就能开始，**说话的时候双手是空着的**，说完再点一下，文字就会出现在原来的光标处。
 
 <sub><a href="https://anoma.ly/hex/">Hex</a> 是一款使用本地语音大模型的听写工具，可以离线将语音转写为文字。HexTouch 为它提供可用鼠标或手指点按的悬浮按钮。</sub>
