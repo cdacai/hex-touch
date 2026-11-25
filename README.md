@@ -1,6 +1,6 @@
 # HexTouch
 
-**无需键盘，也能听写、改字和换行。** HexTouch 给 Windows 上的 Hex 听写加上三个悬浮按钮。用手指或鼠标点一下就能开始，**说话时解放双手**，说完再点一下，文字就会出现在原来的光标处。
+**无需键盘，也能听写、改字和换行。** HexTouch 给 Windows 11 上的 Hex 听写加上三个悬浮按钮。用手指或鼠标点一下就能开始，**说话时解放双手**，说完再点一下，文字就会出现在原来的光标处。
 
 <sub><a href="https://anoma.ly/hex/">Hex</a> 是一款使用本地语音大模型的听写工具，可以离线将语音转写为文字。HexTouch 为它提供可用鼠标或手指点按的悬浮按钮。</sub>
 
@@ -11,7 +11,7 @@
 ## 快速开始
 
 1. 安装并配置 [Hex](https://anoma.ly/hex/)，确认可以完成一次听写。HexTouch 通过 Hex 的命令行控制听写，语音模型由 Hex 提供。
-2. 下载 [Windows 安装包（推荐）](https://github.com/cdacai/hex-touch/releases/latest/download/HexTouchSetup.exe) 或 [免安装版](https://github.com/cdacai/hex-touch/releases/latest/download/HexTouch.exe)。运行需要 Windows 和 .NET Framework 4.x。[查看版本说明](https://github.com/cdacai/hex-touch/releases/latest)
+2. 下载 [Windows 安装包（推荐）](https://github.com/cdacai/hex-touch/releases/latest/download/HexTouchSetup.exe) 或 [免安装版](https://github.com/cdacai/hex-touch/releases/latest/download/HexTouch.exe)。[查看版本说明](https://github.com/cdacai/hex-touch/releases/latest)
 3. 打开记事本并放好光标。左键点击托盘里的 HexTouch 图标显示悬浮按钮，再点主按钮试说一句。主按钮变红表示正在录音。
 
 ## HexTouch 带来哪些便利
@@ -75,7 +75,7 @@ HexTouch 通过 Hex 的命令行控制听写。选择悬浮按钮作为入口，
 
 ### 从源码构建
 
-需要 Windows 自带的 .NET Framework 4.x（Win10/11 都有，不用装 SDK）。
+使用 Windows 11 自带的 .NET Framework 4.x 编译器。
 
 ```cmd
 build.cmd
@@ -219,19 +219,6 @@ Windows 11 默认把新图标放进托盘溢出区（`^`）。第一次显示后
 |---|---|
 | `hextouch.log` | 运行日志（超 512KB 自动清空） |
 | `button.pos` | 悬浮按钮位置记忆（拖过之后才有） |
-
-## 排错
-
-- 看 `hextouch.log`：每次调用 `hex ...` 都会记录命令、退出码和输出摘要
-- 托盘图标变灰 = Hex 没在运行；点一下主球会自动把它拉起来（约 2 秒）
-- `dictation start failed` 之后会有 `hex app started directly` 和重试记录
-
-## 已知限制
-
-- **只对接 Hex**：程序调用的是 Hex 的命令行（`hex dictation start/stop`）。换成别的听写软件需要另写适配层，目前没有做
-- Hex 的 `hex start` 命令在 Hex 未运行时会挂起不返回，所以程序里改为直接启动 `hex.exe` 进程
-- 触摸点击存在系统层约 100–300ms 的判定延迟，按下反馈会稍晚
-- 只支持 Windows（依赖 WinForms 和 `Shell_NotifyIcon`）
 
 ## License
 
