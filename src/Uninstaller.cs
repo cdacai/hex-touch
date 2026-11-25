@@ -12,6 +12,16 @@ internal static class Uninstaller
     private const string RunKey = @"Software\Microsoft\Windows\CurrentVersion\Run";
     private const string UninstallKey = @"Software\Microsoft\Windows\CurrentVersion\Uninstall\HexTouch";
 
+    // 只删自己放进去的文件。安装目录允许用户自选，不能整目录递归删除，
+    // 否则用户选了一个已有内容的文件夹，卸载会连累里面的其他文件。
+    private static readonly string[] OwnedFiles =
+    {
+        AppName + ".exe",
+        AppName + "Uninstall.exe",
+        "hextouch.log",
+        "button.pos"
+    };
+
     [STAThread]
     private static void Main(string[] args)
     {
@@ -35,7 +45,7 @@ internal static class Uninstaller
         if (!fromTemp)
         {
             if (!silent &&
-                MessageBox.Show("确定要卸载 HexTouch 吗？\n\n会关闭程序、清除开机自启并删除程序目录。",
+                MessageBox.Show("确定要卸载 HexTouch 吗？\n\n会关闭程序、清除开机自启，并删除 HexTouch 自己的文件。\n目录里其他文件不会被动。",
                     "HexTouch 卸载", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
             {
                 return;
@@ -88,7 +98,17 @@ internal static class Uninstaller
             {
                 if (Directory.Exists(dir))
                 {
-                    Directory.Delete(dir, true);
+                    foreach (string name in OwnedFiles)
+                    {
+                        string file = Path.Combine(dir, name);
+                        if (File.Exists(file)) File.Delete(file);
+                    }
+
+                    // 只有目录已经空了才移除；还有用户自己的文件就留着。
+                    if (Directory.GetFileSystemEntries(dir).Length == 0)
+                    {
+                        Directory.Delete(dir, false);
+                    }
                 }
                 lastError = null;
                 break;
@@ -112,7 +132,7 @@ internal static class Uninstaller
 
         if (!silent)
         {
-            MessageBox.Show("已卸载，目录和开机自启都已清除。", AppName,
+            MessageBox.Show("已卸载，HexTouch 的文件和开机自启都已清除。", AppName,
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }

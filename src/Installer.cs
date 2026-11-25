@@ -49,6 +49,19 @@ internal static class Installer
             }
         }
 
+        // 目录里已经有别的文件时先提醒：卸载只删 HexTouch 自己的文件，不会连累原有内容。
+        if (!silent && Directory.Exists(dir) && Directory.GetFileSystemEntries(dir).Length > 0)
+        {
+            if (MessageBox.Show(
+                    "这个目录里已经有其他文件：\n" + dir +
+                    "\n\nHexTouch 会把自己的文件放进去；卸载时只删除 HexTouch 自己的文件，" +
+                    "这里的原有内容不会被动。\n\n继续安装吗？",
+                    AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Information) != DialogResult.Yes)
+            {
+                return;
+            }
+        }
+
         string exe = Path.Combine(dir, AppName + ".exe");
         string uninstaller = Path.Combine(dir, AppName + "Uninstall.exe");
 
@@ -111,7 +124,7 @@ internal static class Installer
             MessageBox.Show(
                 "安装完成。\n\n程序目录：" + dir +
                 "\n卸载程序：" + uninstaller +
-                "\n开机自启：已开启" +
+                "\n开机自启：已开启（可在托盘右键菜单里关掉）" +
                 "\n\n任务栏出现图标后，到「设置 → 个性化 → 任务栏 → 其他系统托盘图标」把 HexTouch 打开。",
                 AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
