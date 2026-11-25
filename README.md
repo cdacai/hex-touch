@@ -1,242 +1,242 @@
 # HexTouch
 
-[简体中文](README.md) | [English](README.en.md)
+[简体中文](README.zh-CN.md) | English
 
-**不用按键，也能听写、删字和换行。** HexTouch 给 Windows 上的 Hex 听写加上三个悬浮按钮。用手指或鼠标点一下就能开始，**说话的时候双手是空着的**，说完再点一下，文字就会出现在原来的光标处。
+**Dictate, delete and insert line breaks without touching a key.** HexTouch adds three floating buttons to [Hex](https://anoma.ly/hex/) dictation on Windows. Tap once with a finger or a mouse to start, **your hands stay free while you speak**, tap again and the text lands at the cursor you left behind.
 
-<sub><a href="https://anoma.ly/hex/">Hex</a> 是一款使用本地语音大模型的听写工具，可以离线将语音转写为文字。HexTouch 为它提供可用鼠标或手指点按的悬浮按钮。</sub>
+<sub><a href="https://anoma.ly/hex/">Hex</a> is a dictation tool built on a local speech model; it transcribes speech to text offline. HexTouch gives it buttons you can tap with a mouse or a finger.</sub>
 
-台式机和笔记本都适用，**尤其推荐给没有连接实体键盘的 Windows 平板**。装好 Hex、把光标放进输入框之后，三个按钮就能让你直接在屏幕上完成听写、退格、换行和回车。
+It works on desktops and laptops, and is **especially useful on Windows tablets without a physical keyboard attached**. Once Hex is set up and your cursor is in a text box, the three buttons let you dictate, backspace, insert a line break and press Enter straight from the screen.
 
-![HexTouch 的录音、退格和回车按钮悬浮在记事本的周会纪要旁](docs/images/hextouch-notepad.png)
+![HexTouch recording, backspace and enter buttons floating next to meeting notes in Notepad](docs/images/hextouch-notepad.png)
 
-## 系统要求
+## Requirements
 
-| 项目 | 要求 |
+| Item | Requirement |
 |---|---|
-| 系统 | Windows 10 / 11（开发和测试主要在 Windows 11 26100 上进行） |
-| 运行时 | .NET Framework 4.x，系统自带，不需要另外安装 |
-| 依赖 | 需要预先安装 [Hex](https://anoma.ly/hex/)（3.x），并确认能完成一次听写 |
-| 权限 | 装在用户目录时不需要管理员权限 |
+| OS | Windows 10 / 11 (development and testing done on Windows 11 26100) |
+| Runtime | .NET Framework 4.x, included with Windows, nothing to install |
+| Dependency | [Hex](https://anoma.ly/hex/) 3.x must be installed and able to complete one dictation |
+| Privileges | No administrator rights needed when installed under your user folder |
 
-## 快速开始
+## Quick start
 
-1. 安装并配置 [Hex](https://anoma.ly/hex/)，确认可以完成一次听写。HexTouch 通过 Hex 的命令行控制听写，语音模型由 Hex 提供。
-2. 下载 [HexTouch Windows 安装版（推荐）](https://github.com/cdacai/hex-touch/releases/latest/download/HexTouchSetup.exe) 或 [HexTouch Windows 免安装版](https://github.com/cdacai/hex-touch/releases/latest/download/HexTouch.exe)。[查看版本说明](https://github.com/cdacai/hex-touch/releases/latest)
-3. 打开记事本并放好光标。左键点击托盘里的 HexTouch 图标显示悬浮按钮，再点主按钮试说一句。主按钮变红表示正在录音。
+1. Install and configure [Hex](https://anoma.ly/hex/), and confirm one dictation works. HexTouch drives dictation through the Hex command line; the speech model comes from Hex.
+2. Download the [Windows installer (recommended)](https://github.com/cdacai/hex-touch/releases/latest/download/HexTouchSetup.exe) or the [Windows portable build](https://github.com/cdacai/hex-touch/releases/latest/download/HexTouch.exe). See the [release notes](https://github.com/cdacai/hex-touch/releases/latest).
+3. Open Notepad and place the cursor. Left-click the HexTouch tray icon to show the buttons, then tap the main button and say a sentence. The main button turns red while recording.
 
-## HexTouch 带来哪些便利
+## What HexTouch changes
 
-HexTouch 通过 Hex 的命令行控制听写。选择悬浮按钮作为入口，就无需为听写另绑快捷键，也省去了与其他应用协调键位的麻烦。
+HexTouch drives dictation through the Hex command line. Using a floating button as the entry point means you don't have to bind a shortcut for dictation, and you don't have to negotiate key combinations with other applications.
 
-| 使用场景 | 通过 Hex 快捷键操作 | 通过 HexTouch 悬浮按钮操作 |
+| Situation | With a Hex shortcut | With the HexTouch button |
 |---|---|---|
-| **没有实体键盘** | 平板拆下键盘后，已绑定的按键不在手边 | 手指点主按钮开始或结束听写，点退格删字，双击回车换行 |
-| **常用键位已有用途** | Hex 的快捷键是全局的，和输入法、编辑器撞键时只能二选一 | 点击按钮直接控制听写，不需要占用任何键位 |
+| **No physical keyboard** | After detaching the tablet keyboard, the bound key is out of reach | Tap the main button to start or stop, tap backspace to delete a character, double-tap Enter for a new line |
+| **Your usual keys are taken** | Hex shortcuts are global; when they collide with an IME or an editor, only one can win | Tap the button to control dictation without giving up any key binding |
 
-## 功能
+## Features
 
-- 托盘常驻，左键显示 / 隐藏悬浮按钮
-- 悬浮按钮三颗：**主按钮**（录音 / 停止）、**回车**、**退格**
-- 点按切换，不需要按住
-- 悬浮窗带 `WS_EX_NOACTIVATE`，点击不会夺走输入框焦点
-- 双击回车钮 = 插入换行（用剪贴板粘贴，绕过中文输入法吞 `Shift+Enter`）
-- 可拖动，位置自动记住
-- 开机自启（托盘菜单里勾选）
-- 单文件 exe，不依赖 Python、不需要装 .NET SDK，用系统自带的 .NET Framework 4.x
+- Lives in the system tray; left-click shows or hides the floating buttons
+- Three buttons: **main** (record / stop), **Enter**, **backspace**
+- Tap to toggle; no press-and-hold
+- The floating window uses `WS_EX_NOACTIVATE`, so tapping it never steals focus from your text box
+- Double-tap Enter inserts a line break (pasted from the clipboard, so a Chinese IME can't swallow `Shift+Enter`)
+- Draggable, and the position is remembered
+- Optional run-at-startup (checkbox in the tray menu)
+- Single exe, no Python, no .NET SDK; uses the .NET Framework 4.x that ships with Windows
 
-## 资源占用
+## Resource usage
 
-正式版 v0.1.2 在 Windows 11、2560×1600（200% 缩放）上，显示悬浮按钮并处于待机状态，每秒采样一次、连续三次，读数稳定：
+Measured on the v0.1.2 release build on Windows 11 at 2560×1600 (200% scaling), with the floating buttons shown and idle. One sample per second, three samples, stable readings:
 
-| 进程 | 工作集 | 专用内存 |
+| Process | Working set | Private memory |
 |---|---|---|
 | HexTouch | 48 MiB | 30 MiB |
-| Hex（同期，已加载模型） | 约 160–260 MiB | — |
+| Hex (concurrent, model loaded) | ~160–260 MiB | — |
 
-工作集包含共享内存页，和专用内存有重叠，不要相加。HexTouch 这部分开销主要来自 .NET Framework 运行时本身，靠改业务代码压不下去；如果要继续往下压，只能改用原生 Win32 重写，目前没有这个计划。
+The working set includes shared pages and overlaps with private memory, so don't add them together. Most of the HexTouch footprint is the .NET Framework runtime itself and cannot be reduced by changing application code; going lower would mean rewriting it in native Win32, which is not planned.
 
-不同设备、Windows 版本和听写状态下的数值会有出入。欢迎在 [Issues](https://github.com/cdacai/hex-touch/issues) 分享你自己的观测数据。
+Numbers vary with hardware, Windows version and dictation state. Feel free to share your own measurements in [Issues](https://github.com/cdacai/hex-touch/issues).
 
-## 安装
+## Installation
 
-### HexTouch Windows 安装版（推荐）
+### Windows installer (recommended)
 
-运行 `HexTouchSetup.exe`：
+Run `HexTouchSetup.exe`:
 
-| 操作 | 命令 |
+| Action | Command |
 |---|---|
-| 图形安装（可选目录） | 双击 `HexTouchSetup.exe` |
-| 静默安装到默认位置 | `HexTouchSetup.exe --silent` |
-| 指定路径静默安装 | `HexTouchSetup.exe --silent --dir=D:\Tools\HexTouch` |
-| 卸载 | 安装目录下的 `HexTouchUninstall.exe`，或「设置 → 应用」 |
+| Graphical install (choose a folder) | Double-click `HexTouchSetup.exe` |
+| Silent install to the default folder | `HexTouchSetup.exe --silent` |
+| Silent install to a custom path | `HexTouchSetup.exe --silent --dir=D:\Tools\HexTouch` |
+| Uninstall | `HexTouchUninstall.exe` in the install folder, or Settings → Apps |
 
-安装会：释放主程序和卸载器 → 写开机自启 → 注册卸载入口 → 立即启动。
+The installer unpacks the main program and the uninstaller, writes the run-at-startup entry, registers an uninstall entry, and launches the app.
 
-安装窗口会预填当前用户的完整路径（默认 `%LOCALAPPDATA%\HexTouch`），通常无需管理员权限。可以直接编辑盘符或输入 `D:\Tools\HexTouch`，也可以点「浏览」。点击「安装」会创建缺少的文件夹并检查写入权限。
+The install window is pre-filled with your full user path (default `%LOCALAPPDATA%\HexTouch`) and normally needs no administrator rights. You can edit the drive or type a path such as `D:\Tools\HexTouch`, or pick one with **Browse**. **Install** creates missing folders and verifies that the location is writable.
 
-### HexTouch Windows 免安装版
+### Windows portable build
 
-直接运行 `HexTouch.exe` 即可，不需要安装。首次运行默认启用开机自启动，并保存以下数据：
+Run `HexTouch.exe` directly; nothing needs to be installed. On first run it enables run-at-startup and stores:
 
-- `HKCU\Software\Microsoft\Windows\CurrentVersion\Run` 下的自启项（可在托盘菜单里关掉）
-- 注册表 `HKCU\Software\HexTouch` 中的首次初始化标记
-- exe 同目录的 `hextouch.log` 和 `button.pos`（日志和悬浮按钮位置）
+- the startup entry under `HKCU\Software\Microsoft\Windows\CurrentVersion\Run` (switch it off in the tray menu)
+- the first-run marker under the registry key `HKCU\Software\HexTouch`
+- `hextouch.log` and `button.pos` next to the exe (log and floating button position)
 
-不注册卸载项、不写开始菜单快捷方式。
+It does not register an uninstall entry and does not create a Start menu shortcut.
 
-### 从源码构建
+### Building from source
 
-使用系统里 .NET Framework 4.x 附带的 `csc.exe`（Win10/11 都有，不需要另装 SDK）。
+Uses the `csc.exe` that ships with .NET Framework 4.x (present on Windows 10 and 11; no SDK needed).
 
 ```cmd
 build.cmd
 ```
 
-依次生成：
+Produces, in order:
 
-1. `dist\HexTouch.exe` — 主程序
-2. `dist\HexTouchUninstall.exe` — 卸载器
-3. `dist\HexTouchSetup.exe` — 安装器（把上面两个嵌为资源）
+1. `dist\HexTouch.exe` — the main program
+2. `dist\HexTouchUninstall.exe` — the uninstaller
+3. `dist\HexTouchSetup.exe` — the installer, with the two files above embedded as resources
 
-编译器路径自动探测 `Framework64` / `Framework` 下的 `csc.exe`。
+The compiler path is detected automatically under `Framework64` / `Framework`.
 
-改图标后重新生成（只在构建期用 Python）：
+To regenerate the icon (Python is only used at build time):
 
 ```cmd
 python tools\gen_icon.py
 ```
 
-## 使用指南
+## Usage
 
-### 开始一次听写
+### Start a dictation
 
-1. 左键点击系统托盘里的 HexTouch 图标，显示三个悬浮按钮。若找不到图标，可先展开任务栏右侧的隐藏图标。
-2. 点击记事本、聊天框或文档中的输入位置，再轻点左侧带音波的大圆。主按钮变成红底白色方块后就可以说话。
-3. 说完再点一次主按钮。Hex 会结束听写，把转写文字放到原光标处。
+1. Left-click the HexTouch icon in the system tray to show the three floating buttons. If you can't find the icon, expand the hidden icons on the right side of the taskbar first.
+2. Click into the text position in Notepad, a chat box or a document, then tap the large circle with the waveform. When the main button turns red with a white stop square, start speaking.
+3. Tap the main button again when you're done. Hex stops dictation and drops the transcription at the cursor you left.
 
-### 编辑、换行和发送
+### Editing, line breaks and sending
 
-| 按钮 | 手势 | 用途 |
+| Button | Gesture | Effect |
 |---|---|---|
-| 右上退格键 | 轻点一次 | 向当前应用发送 Backspace，效果与键盘退格相同。 |
-| 右下回车键 | 轻点一次 | 向当前应用发送 Enter。在记事本里会换行，在设为「回车发送」的聊天框里会发送消息。 |
-| **右下回车键** | **快速连点两次** | **在支持多行粘贴的输入框中插入换行。** 适合聊天时另起一段，继续编辑同一条消息。 |
+| Top-right backspace | Single tap | Sends Backspace to the active application, same as the keyboard. |
+| Bottom-right Enter | Single tap | Sends Enter. Inserts a new line in Notepad; sends the message in chat apps configured to send on Enter. |
+| **Bottom-right Enter** | **Two quick taps** | **Inserts a line break in input boxes that accept multi-line pastes.** Useful for starting a new paragraph while editing the same message. |
 
-例如，在「回车发送」的聊天框里，先听写第一段，**双击右下回车键**另起一行，再听写第二段。检查完文字后，**单击同一个回车键**发送整条消息。
+For example, in a chat app set to send on Enter, dictate the first paragraph, **double-tap Enter** for a new line, then dictate the second paragraph. After checking the text, **single-tap the same Enter button** to send the whole message.
 
-回车键会短暂等待第二次点击，因此单击稍有延迟。双击换行会临时借用剪贴板粘贴一个换行符，随后尝试恢复原内容。
+The Enter button waits briefly for a second tap, so a single tap has a small delay. The double-tap line break borrows the clipboard to paste a newline character, then tries to restore the previous contents.
 
-### 示例：边看代码边口述提示词
+### Example: dictating prompts while reading code
 
-在 AI 编程助手的输入框里放好光标，点一下主按钮，就能一边看代码一边口述需求、复现步骤和验收条件。例如：“安装目录没有写入权限时，请保留用户输入的路径，提示他换一个文件夹，然后允许重试。”
+Place the cursor in an AI coding assistant's input box and tap the main button, then describe requirements, reproduction steps and acceptance criteria while looking at the code. For example: "When the install folder isn't writable, keep the path the user typed, tell them to pick another folder, and allow a retry."
 
-写较长的提示词时，可以先听写目标，双击右下回车按钮换行，再听写约束。文件名、函数名和报错原文可以从编辑器复制到对应位置，核对后再发送。
+For longer prompts, dictate the goal first, double-tap the bottom-right Enter button for a new line, then dictate the constraints. File names, function names and error messages can be copied from the editor into place and checked before sending.
 
-### 移动、收起和退出
+### Moving, hiding and quitting
 
-- **调整位置**：按住左侧主按钮拖动，松手后保存位置。
-- **收起或重新显示**：左键点击托盘图标。
-- **打开 Hex 或更改自启**：右键点击托盘图标，选择「唤起 Hex 窗口」或「开机自启动」。勾选表示已启用。
-- **退出**：「退出 Hex」关闭听写程序并收起悬浮按钮。「退出」关闭 HexTouch 托盘工具，之后可从安装目录或开始菜单重新打开。
+- **Reposition**: press and drag the main button, then release; the position is saved.
+- **Hide or show**: left-click the tray icon.
+- **Open Hex or change startup**: right-click the tray icon and choose "唤起 Hex 窗口" (open the Hex window) or "开机自启动" (run at startup). A checkmark means it is enabled.
+- **Quit**: "退出 Hex" (quit Hex) closes the dictation program and hides the buttons. "退出" (quit) closes the HexTouch tray app; reopen it from the install folder or the Start menu.
 
-## 工作原理
+## How it works
 
 ```
-托盘图标（NotifyIcon）
-   │ 左键点击：显示 / 隐藏
+Tray icon (NotifyIcon)
+   │ left-click: show / hide
    ▼
-悬浮按钮窗口（WinForms，WS_EX_NOACTIVATE，不抢焦点）
-   ├─ 主按钮 → hex dictation start / stop
-   ├─ 回车钮 → Enter；双击 = 插入换行
-   └─ 退格钮 → Backspace
+Floating button window (WinForms, WS_EX_NOACTIVATE, never takes focus)
+   ├─ main button  → hex dictation start / stop
+   ├─ Enter button → Enter; double-tap = insert line break
+   └─ backspace    → Backspace
         │
         ▼
-Hex CLI（%APPDATA%\hex\bin\hex.com）
+Hex CLI (%APPDATA%\hex\bin\hex.com)
         │
         ▼
-Hex 本地模型转写 → 粘贴回原来的光标位置
+Hex local model transcription → pasted back at the original cursor
 ```
 
-几个关键设计：
+A few deliberate design choices:
 
-- **轻点切换录音状态**：点一次开始，再点一次结束，适合用手指操作
-- **窗口带 `WS_EX_NOACTIVATE`**：点击悬浮按钮不会抢走输入框焦点，文字和回车才能落到正确位置
-- **只调 Hex 的命令行**：不修改 Hex 本身，也不依赖它的热键
-- **失败自愈**：Hex 没运行时点主按钮会自动拉起 `hex.exe`，约 2 秒后开始录音
-- **状态轮询先看进程**：`hex.exe` 不在时跳过 CLI 调用，避免命令挂起把内部队列堵死；悬浮按钮隐藏时也不查录音状态，省掉每轮的进程创建
+- **Tap to toggle recording** — one tap starts, another stops; this suits finger input
+- **The window uses `WS_EX_NOACTIVATE`** — tapping the buttons never takes focus away, so text and Enter reach the original input box
+- **Only the Hex command line is used** — Hex itself is neither modified nor dependent on its hotkeys
+- **Self-healing** — if Hex isn't running, tapping the main button launches `hex.exe` and dictation starts about 2 seconds later
+- **Process check before polling** — when `hex.exe` is absent the CLI is skipped, so a hanging command can't jam the request queue; recording state is also skipped while the buttons are hidden, avoiding a process launch on every poll
 
-## 自启与退出
+## Startup and exit
 
-### 开机自启
+### Run at startup
 
-托盘菜单里的「开机自启动」勾选即写入：
+The "开机自启动" (run at startup) checkbox in the tray menu writes:
 
 ```
 HKCU\Software\Microsoft\Windows\CurrentVersion\Run
-  值名: HexTouchTray
-  值:   <程序绝对路径>
+  value name: HexTouchTray
+  value:      <absolute path to the program>
 ```
 
-也可以命令行关掉：
+You can also remove it from the command line:
 
 ```cmd
 reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v HexTouchTray /f
 ```
 
-### 启动
+### Starting
 
 ```cmd
-HexTouch.exe                  :: 启动，托盘出现图标
-HexTouch.exe --show-ball      :: 启动并直接显示悬浮按钮
+HexTouch.exe                  :: start; the tray icon appears
+HexTouch.exe --show-ball      :: start and show the floating buttons immediately
 ```
 
-### 退出
+### Quitting
 
-| 方式 | 说明 |
+| Method | Effect |
 |---|---|
-| 托盘右键 → **退出** | 关闭 HexTouch，会弹确认框并提示怎么重新打开 |
-| 托盘右键 → **退出 Hex** | 只关 Hex，托盘程序还在（同时收起悬浮按钮） |
-| 任务管理器结束进程 | 兜底 |
+| Tray right-click → **退出** (quit) | Closes HexTouch. A confirmation dialog also explains how to reopen it. |
+| Tray right-click → **退出 Hex** (quit Hex) | Closes only Hex; the tray app stays and the buttons are hidden. |
+| Task Manager → end process | Last resort |
 
-退出后再打开：双击程序文件，或开始菜单里的 **HexTouch**（安装版才会创建快捷方式）。
+To reopen: double-click the program file, or use **HexTouch** in the Start menu (created by the installer only).
 
-### 命令行参数
+### Command-line arguments
 
-| 参数 | 作用 |
+| Argument | Effect |
 |---|---|
-| `--show-ball` | 启动后立即显示悬浮按钮 |
-| `--pos=x,y` | 指定悬浮按钮初始位置（调试用） |
-| `--selftest` | 自测：自动录音 4 秒后退出，用于检查 Hex 通路 |
+| `--show-ball` | Show the floating buttons after starting |
+| `--pos=x,y` | Set the initial position of the floating buttons (for debugging) |
+| `--selftest` | Self-test: records for 4 seconds and exits, to verify the Hex path |
 
-## 托盘图标常驻
+## Keeping the tray icon visible
 
-Windows 11 默认把新图标放进托盘溢出区（`^`）。第一次显示后：
+Windows 11 puts new icons in the tray overflow area (`^`) by default. After it first appears:
 
-`设置 → 个性化 → 任务栏 → 其他系统托盘图标` → 把 **HexTouch** 打开。
+Settings → Personalization → Taskbar → Other system tray icons → turn **HexTouch** on.
 
-## 项目结构
+## Project layout
 
 ```
 .
 ├── src/
-│   ├── HexTouch.cs          # 主程序：托盘、悬浮按钮、录音、换行、删除
-│   ├── Installer.cs         # 安装器（把主程序和卸载器嵌进一个 exe）
-│   └── Uninstaller.cs       # 卸载器（复制到临时目录执行，只删自己放进来的文件）
+│   ├── HexTouch.cs          # main program: tray, floating buttons, recording, Enter, backspace
+│   ├── Installer.cs         # installer (embeds the main program and the uninstaller in one exe)
+│   └── Uninstaller.cs       # uninstaller (copies itself to temp, deletes only files it installed)
 ├── assets/
-│   └── app.ico              # 程序图标
+│   └── app.ico              # application icon
 ├── tools/
-│   └── gen_icon.py          # 构建期生成 app.ico（运行时不依赖 Python）
-├── build.cmd                # 一键编译三个 exe 到 dist/
-└── dist/                    # 编译产物（不入库）
+│   └── gen_icon.py          # generates app.ico at build time (no Python at runtime)
+├── build.cmd                # builds all three exes into dist/
+└── dist/                    # build output (not committed)
 ```
 
-运行时会在 exe 同目录生成：
+At runtime these files appear next to the exe:
 
-| 文件 | 说明 |
+| File | Purpose |
 |---|---|
-| `hextouch.log` | 运行日志（超 512KB 自动清空） |
-| `button.pos` | 悬浮按钮位置记忆（拖过之后才有） |
+| `hextouch.log` | Runtime log (cleared automatically past 512 KB) |
+| `button.pos` | Remembered floating button position (created after you drag it) |
 
 ## License
 
