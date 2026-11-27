@@ -2,6 +2,10 @@
 
 简体中文 | [English](README.md)
 
+[![Release](https://img.shields.io/github/v/release/cdacai/hex-touch)](https://github.com/cdacai/hex-touch/releases)
+[![License](https://img.shields.io/github/license/cdacai/hex-touch)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-Windows%2010%20%7C%2011-lightgrey)](#系统要求)
+
 **不用按键，也能听写、删字和换行。** HexTouch 给 Windows 上的 Hex 听写加上三个悬浮按钮。用手指或鼠标点一下就能开始，**说话的时候双手是空着的**，说完再点一下，文字就会出现在原来的光标处。
 
 <sub><a href="https://anoma.ly/hex/">Hex</a> 是一款使用本地语音大模型的听写工具，可以离线将语音转写为文字。HexTouch 为它提供可用鼠标或手指点按的悬浮按钮。</sub>
@@ -9,6 +13,10 @@
 台式机和笔记本都适用，**尤其推荐给没有连接实体键盘的 Windows 平板**。装好 Hex、把光标放进输入框之后，三个按钮就能让你直接在屏幕上完成听写、退格、换行和回车。
 
 ![HexTouch 的录音、退格和回车按钮悬浮在记事本的周会纪要旁](docs/images/hextouch-notepad.png)
+
+点一下主按钮变红开始录音，再点一下停止，转写文字落回光标处。
+
+![点一下主按钮开始录音（变红），再点一下停止](docs/images/hextouch-demo.gif)
 
 ## 系统要求
 
@@ -19,11 +27,13 @@
 | 依赖 | 需要预先安装 [Hex](https://anoma.ly/hex/)（3.x），并确认能完成一次听写 |
 | 权限 | 装在用户目录时不需要管理员权限 |
 
+> **说明：** 托盘菜单和安装程序目前只有中文界面。
+
 ## 快速开始
 
 1. 安装并配置 [Hex](https://anoma.ly/hex/)，确认可以完成一次听写。HexTouch 通过 Hex 的命令行控制听写，语音模型由 Hex 提供。
 2. 下载 [HexTouch Windows 安装版（推荐）](https://github.com/cdacai/hex-touch/releases/latest/download/HexTouchSetup.exe) 或 [HexTouch Windows 免安装版](https://github.com/cdacai/hex-touch/releases/latest/download/HexTouch.exe)。[查看版本说明](https://github.com/cdacai/hex-touch/releases/latest)
-3. 打开记事本并放好光标。左键点击托盘里的 HexTouch 图标显示悬浮按钮，再点主按钮试说一句。主按钮变红表示正在录音。
+3. 打开记事本并放好光标。左键点击托盘里的 HexTouch 图标显示悬浮按钮（找不到就展开任务栏右侧的隐藏图标），再点主按钮试说一句。主按钮变红表示正在录音。
 
 ## HexTouch 带来哪些便利
 
@@ -44,19 +54,6 @@ HexTouch 通过 Hex 的命令行控制听写。选择悬浮按钮作为入口，
 - 可拖动，位置自动记住
 - 开机自启（托盘菜单里勾选）
 - 单文件 exe，不依赖 Python、不需要装 .NET SDK，用系统自带的 .NET Framework 4.x
-
-## 资源占用
-
-正式版 v0.1.2 在 Windows 11、2560×1600（200% 缩放）上，显示悬浮按钮并处于待机状态，每秒采样一次、连续三次，读数稳定：
-
-| 进程 | 工作集 | 专用内存 |
-|---|---|---|
-| HexTouch | 48 MiB | 30 MiB |
-| Hex（同期，已加载模型） | 约 160–260 MiB | — |
-
-工作集包含共享内存页，和专用内存有重叠，不要相加。HexTouch 这部分开销主要来自 .NET Framework 运行时本身，靠改业务代码压不下去；如果要继续往下压，只能改用原生 Win32 重写，目前没有这个计划。
-
-不同设备、Windows 版本和听写状态下的数值会有出入。欢迎在 [Issues](https://github.com/cdacai/hex-touch/issues) 分享你自己的观测数据。
 
 ## 安装
 
@@ -139,6 +136,19 @@ python tools\gen_icon.py
 - **收起或重新显示**：左键点击托盘图标。
 - **打开 Hex 或更改自启**：右键点击托盘图标，选择「唤起 Hex 窗口」或「开机自启动」。勾选表示已启用。
 - **退出**：「退出 Hex」关闭听写程序并收起悬浮按钮。「退出」关闭 HexTouch 托盘工具，之后可从安装目录或开始菜单重新打开。
+
+## 资源占用
+
+正式版 v0.1.2 在 Windows 11、2560×1600（200% 缩放）上，显示悬浮按钮并处于待机状态，每秒采样一次、连续三次，读数稳定：
+
+| 进程 | 工作集 | 专用内存 |
+|---|---|---|
+| HexTouch | 48 MiB | 30 MiB |
+| Hex（同期，已加载模型） | 约 160–260 MiB | — |
+
+工作集包含共享内存页，和专用内存有重叠，不要相加。HexTouch 这部分开销主要来自 .NET Framework 运行时本身，靠改业务代码压不下去；如果要继续往下压，只能改用原生 Win32 重写，目前没有这个计划。
+
+不同设备、Windows 版本和听写状态下的数值会有出入。欢迎在 [Issues](https://github.com/cdacai/hex-touch/issues) 分享你自己的观测数据。
 
 ## 工作原理
 
@@ -238,6 +248,21 @@ Windows 11 默认把新图标放进托盘溢出区（`^`）。第一次显示后
 | `hextouch.log` | 运行日志（超 512KB 自动清空） |
 | `button.pos` | 悬浮按钮位置记忆（拖过之后才有） |
 
+## 排错
+
+**找不到托盘图标。** Windows 11 默认把新图标藏进溢出区。点开托盘上的 `^`，把 HexTouch 拖到任务栏上，或者按「[托盘图标常驻](#托盘图标常驻)」设置。
+
+**点主按钮没反应。** Hex 没在运行时，HexTouch 会先把它拉起来，约 2 秒后才开始录音。再等不到就去看 exe 同目录的 `hextouch.log`。
+
+**没有文字出现。** Hex 是把文字粘贴到当前焦点窗口的。先点进目标输入框，再点按钮。
+
+## 已知限制
+
+- **只对接 Hex**：HexTouch 通过命令行调用 `hex dictation start/stop`，换别的听写软件需要另写适配层。
+- **点按有延迟**：Windows 需要 100–300 ms 判断一次触摸是轻点，所以反馈会稍晚。
+- **不能按住**：按住超过 0.5 秒会被系统判成长按（右键），所以设计成点按切换。
+- **界面只有中文**：托盘菜单和安装程序还没有本地化。
+
 ## License
 
-MIT
+MIT © [cdacai](https://github.com/cdacai)

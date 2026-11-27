@@ -2,6 +2,10 @@
 
 [简体中文](README.zh-CN.md) | English
 
+[![Release](https://img.shields.io/github/v/release/cdacai/hex-touch)](https://github.com/cdacai/hex-touch/releases)
+[![License](https://img.shields.io/github/license/cdacai/hex-touch)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-Windows%2010%20%7C%2011-lightgrey)](#requirements)
+
 **Dictate, delete and insert line breaks without touching a key.** HexTouch adds three floating buttons to [Hex](https://anoma.ly/hex/) dictation on Windows. Tap once with a finger or a mouse to start, **your hands stay free while you speak**, tap again and the text lands at the cursor you left behind.
 
 <sub><a href="https://anoma.ly/hex/">Hex</a> is a dictation tool built on a local speech model; it transcribes speech to text offline. HexTouch gives it buttons you can tap with a mouse or a finger.</sub>
@@ -9,6 +13,10 @@
 It works on desktops and laptops, and is **especially useful on Windows tablets without a physical keyboard attached**. Once Hex is set up and your cursor is in a text box, the three buttons let you dictate, backspace, insert a line break and press Enter straight from the screen.
 
 ![HexTouch recording, backspace and enter buttons floating next to meeting notes in Notepad](docs/images/hextouch-notepad.png)
+
+Tapping the main button turns it red while recording; tapping again stops and the transcription lands at the cursor.
+
+![Tapping the main button starts recording (red), tapping again stops it](docs/images/hextouch-demo.gif)
 
 ## Requirements
 
@@ -19,11 +27,13 @@ It works on desktops and laptops, and is **especially useful on Windows tablets 
 | Dependency | [Hex](https://anoma.ly/hex/) 3.x must be installed and able to complete one dictation |
 | Privileges | No administrator rights needed when installed under your user folder |
 
+> **Note:** the tray menu and installer text are currently in Chinese only. An English UI is not available yet.
+
 ## Quick start
 
 1. Install and configure [Hex](https://anoma.ly/hex/), and confirm one dictation works. HexTouch drives dictation through the Hex command line; the speech model comes from Hex.
 2. Download the [Windows installer (recommended)](https://github.com/cdacai/hex-touch/releases/latest/download/HexTouchSetup.exe) or the [Windows portable build](https://github.com/cdacai/hex-touch/releases/latest/download/HexTouch.exe). See the [release notes](https://github.com/cdacai/hex-touch/releases/latest).
-3. Open Notepad and place the cursor. Left-click the HexTouch tray icon to show the buttons, then tap the main button and say a sentence. The main button turns red while recording.
+3. Open Notepad and place the cursor. Left-click the HexTouch tray icon to show the buttons (if you can't see it, expand the hidden icons on the right of the taskbar), then tap the main button and say a sentence. The main button turns red while recording.
 
 ## What HexTouch changes
 
@@ -44,19 +54,6 @@ HexTouch drives dictation through the Hex command line. Using a floating button 
 - Draggable, and the position is remembered
 - Optional run-at-startup (checkbox in the tray menu)
 - Single exe, no Python, no .NET SDK; uses the .NET Framework 4.x that ships with Windows
-
-## Resource usage
-
-Measured on the v0.1.2 release build on Windows 11 at 2560×1600 (200% scaling), with the floating buttons shown and idle. One sample per second, three samples, stable readings:
-
-| Process | Working set | Private memory |
-|---|---|---|
-| HexTouch | 48 MiB | 30 MiB |
-| Hex (concurrent, model loaded) | ~160–260 MiB | — |
-
-The working set includes shared pages and overlaps with private memory, so don't add them together. Most of the HexTouch footprint is the .NET Framework runtime itself and cannot be reduced by changing application code; going lower would mean rewriting it in native Win32, which is not planned.
-
-Numbers vary with hardware, Windows version and dictation state. Feel free to share your own measurements in [Issues](https://github.com/cdacai/hex-touch/issues).
 
 ## Installation
 
@@ -139,6 +136,19 @@ For longer prompts, dictate the goal first, double-tap the bottom-right Enter bu
 - **Hide or show**: left-click the tray icon.
 - **Open Hex or change startup**: right-click the tray icon and choose "唤起 Hex 窗口" (open the Hex window) or "开机自启动" (run at startup). A checkmark means it is enabled.
 - **Quit**: "退出 Hex" (quit Hex) closes the dictation program and hides the buttons. "退出" (quit) closes the HexTouch tray app; reopen it from the install folder or the Start menu.
+
+## Resource usage
+
+Measured on the v0.1.2 release build on Windows 11 at 2560×1600 (200% scaling), with the floating buttons shown and idle. One sample per second, three samples, stable readings:
+
+| Process | Working set | Private memory |
+|---|---|---|
+| HexTouch | 48 MiB | 30 MiB |
+| Hex (concurrent, model loaded) | ~160–260 MiB | — |
+
+The working set includes shared pages and overlaps with private memory, so don't add them together. Most of the HexTouch footprint is the .NET Framework runtime itself and cannot be reduced by changing application code; going lower would mean rewriting it in native Win32, which is not planned.
+
+Numbers vary with hardware, Windows version and dictation state. Feel free to share your own measurements in [Issues](https://github.com/cdacai/hex-touch/issues).
 
 ## How it works
 
@@ -238,6 +248,21 @@ At runtime these files appear next to the exe:
 | `hextouch.log` | Runtime log (cleared automatically past 512 KB) |
 | `button.pos` | Remembered floating button position (created after you drag it) |
 
+## Troubleshooting
+
+**The tray icon is missing.** Windows 11 hides new icons by default. Open the tray overflow (`^`) and drag HexTouch onto the taskbar, or see [Keeping the tray icon visible](#keeping-the-tray-icon-visible).
+
+**Tapping the main button does nothing.** If Hex isn't running, HexTouch launches `hex.exe` first and recording starts about 2 seconds later. If nothing happens after that, check `hextouch.log` next to the exe.
+
+**Text doesn't appear.** Hex pastes into whatever window has focus. Click into the target text box first, then tap the button.
+
+## Known limitations
+
+- **Hex only.** HexTouch drives `hex dictation start/stop` through the command line. Other dictation apps would need a separate adapter.
+- **Tap has a delay.** Windows needs 100–300 ms to decide a touch is a tap, so feedback is slightly late.
+- **No press-and-hold.** Holding for more than 0.5 s is Windows' long-press gesture (right-click). That's why the button toggles on tap.
+- **Chinese UI.** The tray menu and installer are not localized yet.
+
 ## License
 
-MIT
+MIT © [cdacai](https://github.com/cdacai)
